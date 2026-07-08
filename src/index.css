@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+@theme {
+  --color-cinema-bg: #0B0B0F;
+  --color-cinema-surface: #16161D;
+  --color-cinema-border: #26262F;
+  --color-cinema-gold: #E3B341;
+  --color-cinema-red: #C0392B;
+  --color-cinema-text: #F5F3EE;
+  --color-cinema-muted: #8B8B95;
+  --color-cinema-green: #3FA34D;
+
+  --font-display: "Bebas Neue", sans-serif;
+  --font-body: "Inter", sans-serif;
+}
+
+body {
+  @apply bg-cinema-bg text-cinema-text font-body;
+}
