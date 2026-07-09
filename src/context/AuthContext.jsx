@@ -26,7 +26,7 @@ export function AuthProvider({ children }) {
     try {
       await authApi.logout(refreshToken);
     } catch {
-      // ignore - token may already be expired
+      
     }
     localStorage.clear();
     setUser(null);

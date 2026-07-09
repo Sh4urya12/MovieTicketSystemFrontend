@@ -3,24 +3,40 @@ import { useParams, useNavigate } from "react-router-dom";
 import { getSeats } from "../api/movieApi";
 import { lockSeats, bookTicket } from "../api/bookingApi";
 import SeatMap from "../components/SeatMap";
+import ReviewSection from "../components/ReviewSection";
+import { useAuth } from "../context/AuthContext";
 
 export default function MovieDetails() {
+  const { user } = useAuth();
   const { movieId } = useParams();
   const navigate = useNavigate();
-  const [seats, setSeats] = useState([]);
+  const [seatMap, setSeatMap] = useState({ seats: [], totalSeats: null, availableSeats: null });
   const [selected, setSelected] = useState([]);
   const [locked, setLocked] = useState(false);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
 
-  const loadSeats = async () => setSeats(await getSeats(movieId));
+  const loadSeats = async () => {
+    const data = await getSeats(movieId);
+    setSeatMap(data);
+
+    setSelected((prev) =>
+      prev.filter((sn) => {
+        const s = data.seats.find((x) => x.seatNumber === sn);
+        return s && s.status === "AVAILABLE";
+      })
+    );
+  };
 
   useEffect(() => {
     loadSeats();
-  }, [movieId]);
+    if (locked) return; 
+    const interval = setInterval(loadSeats, 5000);
+    return () => clearInterval(interval);
+  }, [movieId, locked]);
 
   const toggleSeat = (seatNumber) => {
-    if (locked) return; // can't change selection after locking
+    if (locked) return;
     setSelected((prev) =>
       prev.includes(seatNumber) ? prev.filter((s) => s !== seatNumber) : [...prev, seatNumber]
     );
@@ -62,7 +78,13 @@ export default function MovieDetails() {
 
       {error && <p className="bg-red-950 text-red-300 text-sm rounded p-3 mb-6">{error}</p>}
 
-      <SeatMap seats={seats} selectedSeats={selected} onToggle={toggleSeat} />
+      <SeatMap
+        seats={seatMap.seats}
+        selectedSeats={selected}
+        onToggle={toggleSeat}
+        availableSeats={seatMap.availableSeats}
+        totalSeats={seatMap.totalSeats}
+      />
 
       <div className="mt-10 flex items-center justify-between bg-cinema-surface border border-cinema-border rounded-lg p-5">
         <div className="text-sm text-cinema-muted">
@@ -91,6 +113,11 @@ export default function MovieDetails() {
             {busy ? "Booking…" : "Confirm Booking"}
           </button>
         )}
+           <ReviewSection
+            movieId={Number(movieId)}
+            currentUserEmail={user?.email}
+           />
+
       </div>
     </div>
   );

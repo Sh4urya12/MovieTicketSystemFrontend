@@ -2,7 +2,9 @@ import { useState } from "react";
 import { addMovie } from "../../api/movieApi";
 
 export default function AddMovie() {
-  const [form, setForm] = useState({ movieName: "", genre: "", duration: "", language: "", ticketPrice: "" });
+  const [form, setForm] = useState({
+    movieName: "", genre: "", duration: "", language: "", ticketPrice: "", totalSeats: ""
+  });
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
@@ -13,9 +15,14 @@ export default function AddMovie() {
     setError("");
     setMessage("");
     try {
-      await addMovie({ ...form, duration: Number(form.duration), ticketPrice: Number(form.ticketPrice) });
+      await addMovie({
+        ...form,
+        duration: Number(form.duration),
+        ticketPrice: Number(form.ticketPrice),
+        totalSeats: Number(form.totalSeats),  
+      });
       setMessage("Movie added successfully");
-      setForm({ movieName: "", genre: "", duration: "", language: "", ticketPrice: "" });
+      setForm({ movieName: "", genre: "", duration: "", language: "", ticketPrice: "", totalSeats: "" });
     } catch (err) {
       setError(err.response?.data?.message || "Failed to add movie");
     }
@@ -48,6 +55,10 @@ export default function AddMovie() {
         <div>
           <label className="text-sm text-cinema-muted">Ticket Price (₹)</label>
           <input required type="number" step="0.01" value={form.ticketPrice} onChange={update("ticketPrice")} className="w-full bg-cinema-bg border border-cinema-border rounded px-3 py-2 mt-1" />
+        </div>
+        <div>
+          <label className="text-sm text-cinema-muted">Total Seats</label>
+          <input required type="number" min="1" max="260" value={form.totalSeats} onChange={update("totalSeats")} className="w-full bg-cinema-bg border border-cinema-border rounded px-3 py-2 mt-1" />
         </div>
         <button className="w-full bg-cinema-gold hover:bg-yellow-500 text-cinema-bg font-semibold py-2 rounded transition">
           Add Movie

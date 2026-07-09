@@ -9,6 +9,10 @@ export default function MovieCard({ movie }) {
         <span className="bg-cinema-bg px-2 py-1 rounded border border-cinema-border">{movie.language}</span>
         <span className="bg-cinema-bg px-2 py-1 rounded border border-cinema-border">{movie.duration} min</span>
       </div>
+      <div className="flex items-center gap-2 text-xs text-cinema-muted">
+        <span className="text-cinema-gold">★ {movie.averageRating?.toFixed(1) ?? "—"}</span>
+        <span>({movie.totalReviews ?? 0})</span>
+      </div>
       <div className="flex items-center justify-between mt-2">
         <span className="text-cinema-gold font-semibold text-lg">₹{movie.ticketPrice}</span>
         <Link
