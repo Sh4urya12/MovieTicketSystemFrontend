@@ -3,6 +3,7 @@ import { AuthProvider } from "./context/AuthContext";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
+import AllBookings from "./pages/admin/AllBookings";
 
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -32,7 +33,7 @@ export default function App() {
           <Route element={<AdminRoute />}>
             <Route path="/admin/add-movie" element={<AddMovie />} />
             <Route path="/admin/users" element={<AllUsers />} />
-            <Route path="/admin/bookings" element={<MyBookings />} />
+            <Route path="/admin/bookings" element={<AllBookings />} />
           </Route>
         </Routes>
       </AuthProvider>

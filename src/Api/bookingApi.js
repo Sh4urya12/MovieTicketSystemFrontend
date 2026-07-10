@@ -7,3 +7,5 @@ export const bookTicket = (movieId, seatNumbers) =>
   axiosClient.post("/bookings/book", { movieId, seatNumbers }).then((r) => r.data);
 
 export const getBookings = () => axiosClient.get("/bookings").then((r) => r.data);
+
+export const getAllBookings = () => axiosClient.get("/bookings/all").then((r) => r.data);

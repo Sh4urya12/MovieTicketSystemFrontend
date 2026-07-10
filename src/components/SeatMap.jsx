@@ -1,4 +1,21 @@
+function parseSeatNumber(seatNumber) {
+  const match = seatNumber.match(/^([A-Za-z]+)(\d+)$/);
+  if (!match) return { row: seatNumber, col: 0 };
+  return { row: match[1], col: parseInt(match[2], 10) };
+}
+
+function sortSeats(seats) {
+  return [...seats].sort((a, b) => {
+    const pa = parseSeatNumber(a.seatNumber);
+    const pb = parseSeatNumber(b.seatNumber);
+    if (pa.row !== pb.row) return pa.row.localeCompare(pb.row);
+    return pa.col - pb.col;
+  });
+}
+
 export default function SeatMap({ seats, selectedSeats, onToggle, availableSeats, totalSeats }) {
+  const sortedSeats = sortSeats(seats);
+
   return (
     <div>
       <div className="flex justify-center mb-2">
@@ -12,7 +29,7 @@ export default function SeatMap({ seats, selectedSeats, onToggle, availableSeats
       )}
 
       <div className="grid grid-cols-8 gap-3 justify-items-center max-w-xl mx-auto">
-        {seats.map((seat) => {
+        {sortedSeats.map((seat) => {
           const isUnavailable = seat.status === "BOOKED" || seat.status === "LOCKED";
           const isSelected = selectedSeats.includes(seat.seatNumber);
 
