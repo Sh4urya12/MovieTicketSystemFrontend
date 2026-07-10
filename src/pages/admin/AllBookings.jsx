@@ -4,15 +4,17 @@ import { getAllBookings } from "../../api/bookingApi";
 export default function AllBookings() {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    getAllBookings().then((data) => {
-      setBookings(data);
-      setLoading(false);
-    });
+    getAllBookings()
+      .then((data) => setBookings(data))
+      .catch((err) => setError(err.response?.data?.message || "Failed to load bookings"))
+      .finally(() => setLoading(false));
   }, []);
 
   if (loading) return <p className="text-cinema-muted px-6 py-8">Loading…</p>;
+  if (error) return <p className="text-red-400 px-6 py-8">{error}</p>;
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-10">
