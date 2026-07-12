@@ -49,7 +49,7 @@ export default function Login() {
         />
 
         <label className="text-sm text-cinema-muted">Password</label>
-        <div className="relative mt-1 mb-6">
+        <div className="relative mt-1 mb-2">
           <input
             type={showPassword ? "text" : "password"} required value={password} onChange={(e) => setPassword(e.target.value)}
             className="w-full bg-cinema-bg border border-cinema-border rounded px-3 py-2 pr-10 focus:outline-none focus:border-cinema-gold"
@@ -62,6 +62,10 @@ export default function Login() {
           >
             <EyeIcon open={showPassword} />
           </button>
+        </div>
+
+        <div className="text-right mb-6">
+          <Link to="/forgot-password" className="text-xs text-cinema-muted hover:text-cinema-gold">Forgot password?</Link>
         </div>
 
         <button className="w-full bg-cinema-gold hover:bg-yellow-500 text-cinema-bg font-semibold py-2 rounded transition">

@@ -25,6 +25,7 @@ export default function Navbar() {
 
         {isAdmin && (
           <>
+            <Link to="/admin/dashboard" className="hover:text-cinema-text transition">Dashboard</Link>
             <Link to="/admin/add-movie" className="hover:text-cinema-text transition">Add Movie</Link>
             <Link to="/admin/users" className="hover:text-cinema-text transition">Users</Link>
             <Link to="/admin/bookings" className="hover:text-cinema-text transition">All Bookings</Link>
@@ -33,7 +34,7 @@ export default function Navbar() {
 
         {user ? (
           <div className="flex items-center gap-4">
-            <span className="text-cinema-text">{user.name}</span>
+            <Link to="/profile" className="text-cinema-text hover:text-cinema-gold transition">{user.name}</Link>
             <button
               onClick={handleLogout}
               className="bg-cinema-red hover:bg-red-700 text-white px-4 py-1.5 rounded transition"

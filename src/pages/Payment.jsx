@@ -17,6 +17,7 @@ export default function Payment() {
 
   const [method, setMethod] = useState("CREDIT_CARD");
   const [fields, setFields] = useState({ cardNumber: "", upiId: "", bankName: "", walletProvider: "" });
+  const [simulateFailure, setSimulateFailure] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
@@ -34,7 +35,7 @@ export default function Payment() {
     setError("");
     setBusy(true);
     try {
-      const dto = await payForBooking({ bookingId, paymentMethod: method, ...fields });
+      const dto = await payForBooking({ bookingId, paymentMethod: method, ...fields, simulateFailure });
       setResult(dto);
     } catch (err) {
       setError(err.response?.data?.message || "Payment failed");
@@ -126,6 +127,15 @@ export default function Payment() {
             />
           </>
         )}
+
+        <label className="flex items-center gap-2 text-xs text-cinema-muted mb-4">
+          <input
+            type="checkbox"
+            checked={simulateFailure}
+            onChange={(e) => setSimulateFailure(e.target.checked)}
+          />
+          Simulate payment failure (for testing)
+        </label>
 
         <button disabled={busy} className="w-full bg-cinema-gold hover:bg-yellow-500 disabled:opacity-40 text-cinema-bg font-semibold py-2 rounded transition mt-2">
           {busy ? "Processing…" : "Pay Now"}
